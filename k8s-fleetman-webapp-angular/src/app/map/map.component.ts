@@ -17,6 +17,7 @@ export class MapComponent implements OnInit {
   markers: Marker[] = [];
   map: Map;
   centerVehicle: string;
+  
   selectedVehicleHistory;
 
   options = {
@@ -55,18 +56,23 @@ export class MapComponent implements OnInit {
        }
        else
        {
-        this.markers[foundIndex].setLatLng(latLng(vehicle.lat, vehicle.lng));
+         //console.log("updating position......................"+vehicle.name)
+        this.markers[foundIndex].setLatLng(latLng(vehicle.lat, vehicle.lng));         
        }
        if (this.centerVehicle == vehicle.name) {
          //this.map.setView([vehicle.lat,vehicle.lng],
-        //                   this.map.getZoom(), {"animate": true});
-         this.selectedVehicleHistory.addLatLng(latLng(vehicle.lat, vehicle.lng));
+         //                  this.map.getZoom(), {"animate": true});
+         
+         //This block is called from center vehicle and updating lat long and also will be called from following block
+         //polyline(newHistory, {weight:10, opacity:0.5, color:'red'});
+         this.selectedVehicleHistory.addLatLng(latLng(vehicle.lat, vehicle.lng));     
        }
      });
 
      this.vehicleService.centerVehicle.subscribe(vehicle => {
-       if (vehicle == null)
-       {
+      
+      if (vehicle == null)
+       { 
          this.centerVehicle = null;
          return;
        }
@@ -78,10 +84,19 @@ export class MapComponent implements OnInit {
      });
 
      this.vehicleService.centerVehicleHistory.subscribe(newHistory => {
-       if (this.selectedVehicleHistory != null) this.selectedVehicleHistory.remove(this.map);
+
+      var vechicleWithHistory: Vehicle;
+      vechicleWithHistory = <Vehicle> newHistory;
+
+      if (this.selectedVehicleHistory != null) this.selectedVehicleHistory.remove(this.map);
        if (newHistory ==null) return;
-       this.selectedVehicleHistory = polyline(newHistory, {weight:10, opacity:0.5, color:'red'});
+       //this.selectedVehicleHistory = polyline(newHistory, {weight:10, opacity:0.5, color:'red'});
+
+       console.log("<======= printing vechicleWithHistory =========>")
+       console.log(vechicleWithHistory)
+
+       this.selectedVehicleHistory = polyline(vechicleWithHistory.latLngHistory, {weight:10, opacity:0.5, color:'red'});
        this.selectedVehicleHistory.addTo(this.map);
      });
-   }
+   } 
 }

@@ -66,6 +66,9 @@ public class VehicleController
 		this.lastUpdateTime = new Date();
 		for (VehiclePosition next: results)
 		{
+			//System.out.println("=============Printing in vehicle controller=================");
+			//System.out.println(results.toString());
+			//System.out.println("=========================================================");
 			this.messagingTemplate.convertAndSend("/vehiclepositions/messages", next);
 		}
 	}

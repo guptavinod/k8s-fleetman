@@ -4,6 +4,8 @@ export class Vehicle {
   lng: number;
   dateAndTime: string;
   speed: number;
+  //need to maintain lat long history of this Vehicle object
+  latLngHistory = [];
 
   constructor(name: string, lat:number, lng:number, dateAndTime:string, speed: number) {
     this.name = name;

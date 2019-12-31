@@ -43,20 +43,22 @@ export class VehicleService  {
                                  Number(body.longitude),
                                  body.timestamp,
                                 Number(body.speed));
-    this.subscription.next(newVehicle);
+        
+    this.subscription.next(newVehicle); 
   }
 
   updateCenterVehicle(centerVehicle: Vehicle) {
+    
     this.centerVehicle.next(centerVehicle);
 
-    if (centerVehicle == null)
-    {
-      this.centerVehicleHistory.next(null);
-    }
-    else
-    {
+    if (centerVehicle != null)
+    {      
+      //below line will call map.component.ts method "this.vehicleService.centerVehicleHistory.subscribe"
+      this.centerVehicleHistory.next(centerVehicle);
+
       // call API gateway, get the history for this vehicle.
-      this.http.get("http://" + window.location.hostname + ":" + window.location.port + "/api/history/" + centerVehicle.name);
+      //this.http.get("http://" + window.location.hostname + ":" + window.location.port + "/api/history/" + centerVehicle.name);
+      this.http.get("http://" + window.location.hostname + ":8080" + "/history/" + centerVehicle.name);
     }
   }
 }

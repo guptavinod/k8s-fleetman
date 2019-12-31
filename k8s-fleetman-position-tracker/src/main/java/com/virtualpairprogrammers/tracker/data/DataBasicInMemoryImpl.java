@@ -44,6 +44,10 @@ public class DataBasicInMemoryImpl implements Data
 	@Override
 	public void updatePosition(VehiclePosition data)
 	{
+		System.out.println("-------------In momery--------------------------------------");
+		System.out.println(data.toString());
+		System.out.println("---------------------------------------------------");
+		
 		String vehicleName = data.getName();
 		TreeSet<VehiclePosition> positions = positionDatabase.get(vehicleName);
 		if (positions == null) 
